@@ -2,11 +2,11 @@
 
 **Container-query linear interpolation.**
 
-![Dragging the sidebar rescales its contents while the window stays put](gifs/sidebar.gif)
+![Dragging the sidebar rescales its contents while the window stays put](https://raw.githubusercontent.com/subamanis/cq-lerp/main/gifs/sidebar.gif)
 
 Drag the sidebar. The window never moves, so a media query has nothing to read.
 
-![Six properties scaling across six families of CSS units](gifs/components.gif)
+![Six properties scaling across six families of CSS units](https://raw.githubusercontent.com/subamanis/cq-lerp/main/gifs/components.gif)
 
 Six properties, six unit families. 0 JavaScript, 0 keyframes, 0 width breakpoints.
 
