@@ -4,7 +4,7 @@
   "description": "Make any CSS value scale with a container's width: degrees, seconds, font weights, percentages, plain numbers.",
   "license": "MIT",
   "author": "Petros Papatheodorou (https://github.com/subamanis)",
-  "homepage": "https://github.com/subamanis/cq-lerp#readme",
+  "homepage": "https://subamanis.github.io/cq-lerp/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/subamanis/cq-lerp.git"

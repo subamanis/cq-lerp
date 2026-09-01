@@ -33,6 +33,8 @@ MIT.
 
 ## Demos
 
+Both run live at **[subamanis.github.io/cq-lerp](https://subamanis.github.io/cq-lerp/)**.
+
 **`examples/index.html`** builds the same app shell twice, once with this library and once
 with `clamp()` plus `vw` plus media queries, and lets you flip between them in place. The
 sidebar is resizable: drag its edge and watch its contents respond in one version and sit
