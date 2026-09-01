@@ -1,0 +1,156 @@
+@use "sass:list";
+@use "sass:math";
+
+/// Container width where interpolation starts. A bare number means pixels; `rem` is kept and
+/// resolved by the browser at its real root font size. Must share a unit with `$cq-ceil`.
+/// @type Number
+$cq-floor: 320 !default;
+
+/// Container width where interpolation stops. Past it every value sits at its max.
+/// Same unit rules as `$cq-floor`, and must be greater than it.
+/// @type Number
+$cq-ceil: 1280 !default;
+
+@function _fluid-strip($v) {
+  @if math.is-unitless($v) { @return $v; }
+  @return math.div($v, ($v * 0 + 1));
+}
+
+@function _fluid-bound($v) {
+  @if math.is-unitless($v) { @return $v * 1px; }
+  @if math.unit($v) == "px" or math.unit($v) == "rem" { @return $v; }
+  @error "cq-lerp: floor/ceil was expecting px, rem or a number, got #{$v}";
+}
+
+@function _fluid-bounds($floor, $ceil) {
+  $f: _fluid-bound($floor);
+  $c: _fluid-bound($ceil);
+
+  @if _fluid-strip($f) == 0 { $f: 0 * $c; }
+  @if _fluid-strip($c) == 0 { $c: 0 * $f; }
+
+  @if math.unit($f) != math.unit($c) {
+    @error "cq-lerp: floor and ceil must share a unit (#{$floor} / #{$ceil})";
+  }
+  @if $c <= $f {
+    @error "cq-lerp: ceil must be greater than floor (#{$floor} / #{$ceil})";
+  }
+  @return ($f, $c);
+}
+
+@function _fluid-unit($min, $max, $override) {
+  @if $override != null { @return $override; }
+
+  $min-bare: math.is-unitless($min);
+  $max-bare: math.is-unitless($max);
+
+  @if not $min-bare and not $max-bare and math.unit($min) != math.unit($max) {
+    @error "cq-lerp: min and max have different units (#{$min} / #{$max})";
+  }
+  @if $min-bare and not $max-bare and $min != 0 {
+    @error "cq-lerp: min #{$min} is unitless but max is #{$max}; add the unit or pass 0";
+  }
+  @if $max-bare and not $min-bare and $max != 0 {
+    @error "cq-lerp: max #{$max} is unitless but min is #{$min}; add the unit or pass 0";
+  }
+  @if not $min-bare { @return math.unit($min); }
+  @if not $max-bare { @return math.unit($max); }
+  @return "px";
+}
+
+/// Progress expression as a `clamp()`, giving a unitless number from 0 to 1.
+/// Works in any browser with container query units and length-by-length division.
+///
+/// @param {Number} $floor [$cq-floor] - container width where progress is 0
+/// @param {Number} $ceil [$cq-ceil] - container width where progress is 1
+/// @return {String} a `clamp()` expression
+/// @throws cq-lerp: floor and ceil must share a unit
+/// @throws cq-lerp: ceil must be greater than floor
+/// @see {function} fluid-track-native
+@function fluid-track($floor: $cq-floor, $ceil: $cq-ceil) {
+  $b: _fluid-bounds($floor, $ceil);
+  $f: list.nth($b, 1);
+  $c: list.nth($b, 2);
+  @return #{"clamp(0, (100cqi - #{$f}) / #{$c - $f}, 1)"};
+}
+
+/// Same progress expression using the native `progress()`.
+/// Needs Chrome 138, Safari 26 or Firefox 155.
+///
+/// @param {Number} $floor [$cq-floor] - container width where progress is 0
+/// @param {Number} $ceil [$cq-ceil] - container width where progress is 1
+/// @return {String} a `progress()` expression
+/// @throws cq-lerp: floor and ceil must share a unit
+/// @throws cq-lerp: ceil must be greater than floor
+@function fluid-track-native($floor: $cq-floor, $ceil: $cq-ceil) {
+  $b: _fluid-bounds($floor, $ceil);
+  @return #{"progress(100cqi, #{list.nth($b, 1)}, #{list.nth($b, 2)})"};
+}
+
+/// Smoothstep applied to a progress: flat at both ends, steep in the middle.
+///
+/// @param {String} $t [var(--cq-t, 0)] - any expression evaluating to a number from 0 to 1
+/// @return {String} a `calc()` expression
+@function fluid-ease($t: var(--cq-t, 0)) {
+  @return #{"calc(#{$t} * #{$t} * (3 - 2 * #{$t}))"};
+}
+
+/// Interpolates between two values along a progress you supply.
+/// Infers the output unit from `$min` and `$max`, so degrees, seconds,
+/// percentages and plain numbers all work. Descending ranges are handled.
+///
+/// @param {Number} $min - value at progress 0
+/// @param {Number} $max - value at progress 1
+/// @param {String} $t [var(--cq-t, 0)] - the progress expression to multiply by
+/// @param {String} $unit [null] - override the inferred unit, `""` for plain numbers
+/// @return {String} a `calc()` expression
+/// @throws cq-lerp: min and max have different units
+/// @example scss
+///   rotate: fluid-on(-7deg, 7deg, var(--cq-t));
+///   font-weight: fluid-on(200, 900, var(--cq-t), "");
+@function fluid-on($min, $max, $t: var(--cq-t, 0), $unit: null) {
+  $u: _fluid-unit($min, $max, $unit);
+  $lo: _fluid-strip($min);
+  $hi: _fluid-strip($max);
+
+  @if $lo == $hi { @return #{$lo}#{$u}; }
+
+  $delta: $hi - $lo;
+
+  @if $lo == 0 { @return #{"calc(#{$delta}#{$u} * #{$t})"}; }
+  @if $delta < 0 { @return #{"calc(#{$lo}#{$u} - #{math.abs($delta)}#{$u} * #{$t})"}; }
+  @return #{"calc(#{$lo}#{$u} + #{$delta}#{$u} * #{$t})"};
+}
+
+/// Standalone interpolation with its own `clamp()` track baked in.
+/// Stays on the fallback path; use `cq-track` for the `progress()` upgrade.
+///
+/// @param {Number} $min - value at the floor
+/// @param {Number} $max - value at the ceiling
+/// @param {Number} $floor [$cq-floor] - container width where interpolation starts
+/// @param {Number} $ceil [$cq-ceil] - container width where it stops
+/// @param {String} $unit [null] - override the inferred unit, `""` for plain numbers
+/// @return {String} a `calc()` expression
+/// @example scss
+///   padding: fluid(12px, 24px);
+@function fluid($min, $max, $floor: $cq-floor, $ceil: $cq-ceil, $unit: null) {
+  @return fluid-on($min, $max, fluid-track($floor, $ceil), $unit);
+}
+
+/// Declares `--cq-t` and `--cq-te` on the current selector, with the
+/// `clamp()` fallback and the native `progress()` upgrade together.
+/// Put it on an element that is a container; descendants read the variables.
+///
+/// @param {Number} $floor [$cq-floor] - container width where progress is 0
+/// @param {Number} $ceil [$cq-ceil] - container width where progress is 1
+/// @output `--cq-t` and `--cq-te`, plus an `@supports` block
+/// @example scss
+///   .panel { @include cq-track(); }
+@mixin cq-track($floor: $cq-floor, $ceil: $cq-ceil) {
+  --cq-t: #{fluid-track($floor, $ceil)};
+  --cq-te: #{fluid-ease(var(--cq-t))};
+
+  @supports (opacity: progress(1px, 0px, 2px)) {
+    --cq-t: #{fluid-track-native($floor, $ceil)};
+  }
+}

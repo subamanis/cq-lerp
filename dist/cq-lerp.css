@@ -1,0 +1,20 @@
+@layer cq-lerp {
+  .cq-lerp,
+  .cq-lerp-track {
+    --cq-floor: 320px;
+    --cq-ceil: 1280px;
+    --cq-t: clamp(0, (100cqi - var(--cq-floor)) / (var(--cq-ceil) - var(--cq-floor)), 1);
+    --cq-te: calc(var(--cq-t) * var(--cq-t) * (3 - 2 * var(--cq-t)));
+  }
+
+  @supports (opacity: progress(1px, 0px, 2px)) {
+    .cq-lerp,
+    .cq-lerp-track {
+      --cq-t: progress(100cqi, var(--cq-floor), var(--cq-ceil));
+    }
+  }
+
+  .cq-lerp {
+    container-type: inline-size;
+  }
+}

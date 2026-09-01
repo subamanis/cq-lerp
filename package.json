@@ -1,0 +1,55 @@
+{
+  "name": "cq-lerp",
+  "version": "1.0.0",
+  "description": "Make any CSS value scale with a container's width: degrees, seconds, font weights, percentages, plain numbers.",
+  "license": "MIT",
+  "author": "Petros Papatheodorou (https://github.com/subamanis)",
+  "homepage": "https://github.com/subamanis/cq-lerp#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subamanis/cq-lerp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/subamanis/cq-lerp/issues"
+  },
+  "keywords": [
+    "css",
+    "scss",
+    "sass",
+    "container-queries",
+    "container-query",
+    "cqi",
+    "fluid",
+    "fluid-typography",
+    "lerp",
+    "interpolation",
+    "clamp",
+    "progress",
+    "responsive",
+    "design-tokens"
+  ],
+  "main": "dist/cq-lerp.css",
+  "style": "dist/cq-lerp.css",
+  "exports": {
+    ".": {
+      "sass": "./_index.scss",
+      "style": "./dist/cq-lerp.css",
+      "default": "./dist/cq-lerp.css"
+    },
+    "./css": "./dist/cq-lerp.css"
+  },
+  "files": [
+    "_index.scss",
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "demo": "sass --no-source-map examples/src/app-cq.scss examples/app-cq.css && sass --no-source-map examples/src/app-conventional.scss examples/app-conventional.css && sass --no-source-map examples/src/units.scss examples/units.css",
+    "demo:watch": "sass --watch --no-source-map examples/src:examples"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}

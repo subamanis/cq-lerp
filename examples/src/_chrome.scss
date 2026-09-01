@@ -1,0 +1,192 @@
+@forward "nav";
+
+:root {
+  --bg: #fbfbfc;
+  --surface: #ffffff;
+  --sunken: #f2f3f6;
+  --border: #e2e3e8;
+  --text: #16171c;
+  --muted: #6b6d78;
+  --primary: oklch(58% 0.21 262);
+  --accent: oklch(68% 0.17 45);
+  --on-primary: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101116;
+    --surface: #191b22;
+    --sunken: #14161c;
+    --border: #2c2e38;
+    --text: #eceef4;
+    --muted: #9698a4;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 1rem/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+h1, h2, h3 { margin: 0; line-height: 1.2; }
+p { margin: 0; }
+figure { margin: 0; }
+
+code {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 0.85em;
+  background: color-mix(in oklch, var(--text), transparent 92%);
+  padding: 0.1em 0.35em;
+  border-radius: 0.25em;
+}
+
+.shell { display: flex; align-items: flex-start; }
+
+.side {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+  min-height: 60vh;
+  container-type: inline-size;
+  resize: horizontal;
+  overflow: auto;
+  min-width: 8rem;
+  max-width: 26rem;
+}
+
+.side::-webkit-resizer {
+  background:
+    linear-gradient(135deg, transparent 40%, var(--primary) 40%, var(--primary) 55%, transparent 55%),
+    linear-gradient(135deg, transparent 68%, var(--primary) 68%, var(--primary) 83%, transparent 83%);
+}
+
+.side .grab {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  font-size: 0.7rem;
+  color: var(--primary);
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.side h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.side a {
+  display: block;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 0.4rem;
+}
+
+.side a:hover { background: var(--sunken); }
+
+.col { flex: 1; min-width: 0; }
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.bar nav { display: flex; align-items: center; }
+.bar a { color: var(--muted); text-decoration: none; }
+.bar a:hover { color: var(--text); }
+
+.mark { font-weight: 700; text-transform: uppercase; }
+
+.open {
+  font: inherit;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 0.4rem;
+  cursor: pointer;
+  padding: 0.4rem 0.8rem;
+}
+
+.open:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.lede { color: var(--muted); max-width: 60ch; }
+
+.note {
+  font-size: 0.8125rem;
+  color: var(--muted);
+  border-left: 2px solid var(--border);
+  padding-left: 0.75rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.card .shot {
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, oklch(62% 0.18 262), oklch(66% 0.16 200));
+}
+
+.card h3 { font-weight: 650; }
+.card .meta { display: flex; justify-content: space-between; color: var(--muted); }
+
+.tri { display: flex; align-items: flex-start; flex-wrap: wrap; }
+.tri .slot { flex: none; max-width: 100%; container-type: inline-size; }
+.tri figcaption { font-size: 0.75rem; color: var(--muted); text-align: center; }
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: color-mix(in oklch, var(--text), transparent 65%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 21;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer h2 { font-size: 1.1rem; }
+.drawer p { color: var(--muted); font-size: 0.875rem; }
+
+.drawer .close {
+  align-self: flex-start;
+  font: inherit;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 0.4rem;
+  cursor: pointer;
+  padding: 0.3rem 0.7rem;
+}
+
+body:has(#drawer-toggle:checked) .scrim { opacity: 1; pointer-events: auto; }
+
+#drawer-toggle { position: absolute; opacity: 0; pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer, .scrim { transition-duration: 0.01ms; }
+}

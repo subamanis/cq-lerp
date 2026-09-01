@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Container-query lerp for SCSS. Any CSS unit, no JavaScript, no keyframes, no media queries.">
+<title>cq-lerp · unit reference</title>
+<link rel="stylesheet" href="units.css">
+</head>
+<body>
+
+<div class="mode">
+  <nav class="tabs">
+    <a href="index.html">Two ways</a>
+    <a href="units.html" aria-current="page">Unit reference</a>
+  </nav>
+  <p class="hint">Which CSS units the interpolation handles. For a realistic page, and a
+  side-by-side against the conventional approach, see <a href="index.html">Two ways</a>.</p>
+</div>
+
+<main>
+
+<header>
+  <h1>cq-lerp</h1>
+  <p class="tagline">
+    Linear interpolation driven by a container's width, in <b>any CSS unit</b>.
+    Built on <code>progress()</code> where the browser has it, with a
+    <code>clamp()</code> fallback where it does not.
+  </p>
+  <p>
+    No JavaScript, no keyframes, no media queries. Every dashed box below is a
+    <code>container-type: inline-size</code> element with <code>resize: horizontal</code>.
+    Grab its bottom right corner and drag, or just resize the window. Both work.
+  </p>
+  <p>
+    The only reason any of this works with degrees, seconds and percentages is that the
+    progress is computed first as a <b>plain number from 0 to 1</b>, and multiplied after.
+  </p>
+</header>
+
+<section>
+  <h2>1. Seven families of units</h2>
+  <div class="frame">
+  <div class="list">
+
+    <div class="row">
+      <figure class="cell">
+        <div class="stage"><button type="button" class="fx squash">Squash</button></div>
+        <figcaption><code>rem</code>, width shrinks while height grows</figcaption>
+      </figure>
+      <figure class="cell">
+        <div class="stage"><button type="button" class="fx tilt">Tilt</button></div>
+        <figcaption><code>deg</code> in rotate and skew at once</figcaption>
+      </figure>
+    </div>
+
+    <div class="row">
+      <figure class="cell">
+        <div class="stage"><button type="button" class="fx spread">SPREAD</button></div>
+        <figcaption><code>em</code> + <code>ch</code> + a plain number for font-weight</figcaption>
+      </figure>
+      <figure class="cell">
+        <div class="stage"><button type="button" class="fx chroma">Chroma</button></div>
+        <figcaption><code>deg</code> inside filter + <code>%</code> in radius</figcaption>
+      </figure>
+    </div>
+
+    <div class="row">
+      <figure class="cell">
+        <div class="stage"><button type="button" class="fx tempo">Hover me</button></div>
+        <figcaption><code>s</code> in transition-duration, 0.06s to 1.4s</figcaption>
+      </figure>
+      <figure class="cell">
+        <div class="stage"><button type="button" class="fx morph">Morph</button></div>
+        <figcaption><code>%</code> in clip-path + a plain number in scale</figcaption>
+      </figure>
+    </div>
+
+  </div>
+  </div>
+  <p class="hint">drag ↑</p>
+</section>
+
+<section>
+  <h2>2. Linear against smoothstep</h2>
+  <p>
+    Same bounds, same property. The top bar runs on <code>var(--cq-t)</code>, the bottom one
+    on <code>var(--cq-te)</code>. They meet at both ends and at the midpoint, and separate
+    at the quarters.
+  </p>
+  <div class="frame">
+  <div class="compare">
+    <div class="bar bar-linear">linear</div>
+    <div class="bar bar-eased">smoothstep</div>
+  </div>
+  </div>
+  <p class="hint">drag ↑</p>
+</section>
+
+<section>
+  <h2>3. Descending range, before and after</h2>
+  <p>
+    Both bars ask for the same thing: 26rem when narrow, 2rem when wide. The top one uses the
+    classic <code>clamp(26rem, ..., 2rem)</code> and sits at 416px forever, because CSS returns
+    MIN whenever MIN is greater than MAX. The bottom one uses <code>fluid(26rem, 2rem)</code>.
+  </p>
+  <div class="frame">
+  <div class="compare">
+    <div class="bar bar-old">clamp with MIN &gt; MAX</div>
+    <div class="bar bar-new">fluid()</div>
+  </div>
+  </div>
+  <p class="hint">drag ↑</p>
+</section>
+
+</main>
+</body>
+</html>

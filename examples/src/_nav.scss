@@ -1,0 +1,64 @@
+.mode {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.6rem 1.25rem;
+  background: var(--sunken);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8125rem;
+}
+
+.mode .hint { flex-basis: 100%; color: var(--muted); }
+.mode .hint a { color: var(--primary); }
+
+.tabs { display: flex; gap: 0.25rem; }
+
+.tabs a {
+  padding: 0.35rem 0.8rem;
+  border-radius: 0.4rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.tabs a:hover { color: var(--text); }
+
+.tabs a[aria-current="page"] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.seg {
+  display: inline-flex;
+  margin-left: auto;
+  padding: 2px;
+  border-radius: 0.5rem;
+  background: color-mix(in oklch, var(--text), transparent 92%);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.seg button {
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0.3rem 0.9rem;
+  border: 0;
+  border-radius: 0.4rem;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.seg button:hover { color: var(--text); }
+
+.seg button[aria-pressed="true"] {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.seg button:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }

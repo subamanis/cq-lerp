@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="The same app shell built twice: once with cq-lerp, once the conventional way. Resize the window and compare.">
+<title>cq-lerp · the same page, two ways</title>
+<link rel="stylesheet" href="app-cq.css" id="sheet">
+</head>
+<body>
+
+<input type="checkbox" id="drawer-toggle">
+
+<div class="mode">
+  <nav class="tabs">
+    <a href="index.html" aria-current="page">Two ways</a>
+    <a href="units.html">Unit reference</a>
+  </nav>
+
+  <div class="seg" role="group" aria-label="Stylesheet">
+    <button type="button" data-sheet="app-cq.css" aria-pressed="true">cq-lerp</button>
+    <button type="button" data-sheet="app-conventional.css" aria-pressed="false">conventional</button>
+  </div>
+
+  <p class="hint">Resize the window to compare, and drag the sidebar edge without touching the
+  window at all. The conventional sheet is <strong>pre-<code>progress()</code> CSS</strong>,
+  which is what browsers ran until 2026: <code>clamp()</code> with <code>vw</code> for lengths,
+  media queries for anything else. Today <code>progress()</code> closes part of that gap on its
+  own, and container width stays out of its reach.</p>
+</div>
+
+<div class="shell">
+
+  <aside class="side">
+    <h3>Library</h3>
+    <a href="#">Overview</a>
+    <a href="#">Collections</a>
+    <a href="#">Recently added</a>
+    <a href="#">Shared with me</a>
+    <a href="#">Archive</a>
+    <span class="grab">drag this edge ↘</span>
+  </aside>
+
+  <div class="col">
+
+    <header class="bar">
+      <span class="mark">Aperture</span>
+      <nav>
+        <a href="#">Browse</a>
+        <a href="#">Upload</a>
+        <a href="#">Settings</a>
+        <label class="open" for="drawer-toggle">Details</label>
+      </nav>
+    </header>
+
+    <main>
+      <h1>One card, three containers, one viewport.</h1>
+      <p class="lede">
+        Everything on this page scales. Resize the window and the type, spacing, corners and
+        header all move. The interesting part is below: the same card markup sits in a 240px
+        slot, a 380px slot and a 520px slot, all at the same time.
+      </p>
+
+      <section class="tri">
+        <div class="slot" style="width:240px">
+          <figure>
+            <article class="card">
+              <div class="shot"></div>
+              <div class="body">
+                <h3>Northern Light</h3>
+                <div class="meta"><span>Iceland</span><span>34</span></div>
+              </div>
+            </article>
+            <figcaption>240px slot</figcaption>
+          </figure>
+        </div>
+
+        <div class="slot" style="width:380px">
+          <figure>
+            <article class="card">
+              <div class="shot"></div>
+              <div class="body">
+                <h3>Northern Light</h3>
+                <div class="meta"><span>Iceland</span><span>34 frames</span></div>
+              </div>
+            </article>
+            <figcaption>380px slot</figcaption>
+          </figure>
+        </div>
+
+        <div class="slot" style="width:520px">
+          <figure>
+            <article class="card">
+              <div class="shot"></div>
+              <div class="body">
+                <h3>Northern Light</h3>
+                <div class="meta"><span>Iceland</span><span>34 frames</span></div>
+              </div>
+            </article>
+            <figcaption>520px slot</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <p class="note" id="verdict"></p>
+
+      <p class="lede">
+        The <strong>Details</strong> button opens a drawer whose width, slide distance, backdrop
+        blur and transition duration all scale with the window. The first three are lengths, so
+        both sheets handle them identically. Duration is where <code>clamp()</code> arithmetic
+        stops, because seconds cannot be added to a length. Note that the container here is the
+        page: <code>100cqi</code> with no container ancestor falls back to the viewport, so both
+        sheets read the same number and only the arithmetic differs.
+      </p>
+    </main>
+
+  </div>
+</div>
+
+<label class="scrim" for="drawer-toggle"></label>
+
+<aside class="drawer">
+  <label class="close" for="drawer-toggle">Close</label>
+  <h2>Northern Light</h2>
+  <p>Open and close this at a narrow window, then at a wide one. Under cq-lerp the slide
+  distance, the blur behind and the time it takes all scale with the window. Under the
+  conventional sheet the distance and blur scale too, and the duration is one fixed value.</p>
+</aside>
+
+<script>
+const link = document.getElementById("sheet");
+const verdict = document.getElementById("verdict");
+const notes = {
+  "app-cq.css": "Each card is sized by its own slot. The narrow one has tighter padding, smaller type and smaller corners than the wide one.",
+  "app-conventional.css": "All three cards are identical. A media query reads the viewport, and the viewport is the same for all three, so it has nothing to key off."
+};
+
+document.querySelectorAll(".seg button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const sheet = btn.dataset.sheet;
+    link.setAttribute("href", sheet);
+    document.querySelectorAll(".seg button").forEach(b => {
+      b.setAttribute("aria-pressed", String(b === btn));
+    });
+    verdict.textContent = notes[sheet];
+  });
+});
+
+verdict.textContent = notes["app-cq.css"];
+</script>
+
+</body>
+</html>
