@@ -1,6 +1,6 @@
 {
   "name": "cq-lerp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Make any CSS value scale with a container's width: degrees, seconds, font weights, percentages, plain numbers.",
   "license": "MIT",
   "author": "Petros Papatheodorou (https://github.com/subamanis)",
