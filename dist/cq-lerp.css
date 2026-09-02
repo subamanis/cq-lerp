@@ -3,7 +3,7 @@
   .cq-lerp-track {
     --cq-floor: 320px;
     --cq-ceil: 1280px;
-    --cq-t: clamp(0, (100cqi - var(--cq-floor)) / (var(--cq-ceil) - var(--cq-floor)), 1);
+    --cq-t: clamp(0, tan(atan2(100cqi - var(--cq-floor), var(--cq-ceil) - var(--cq-floor))), 1);
     --cq-te: calc(var(--cq-t) * var(--cq-t) * (3 - 2 * var(--cq-t)));
   }
 

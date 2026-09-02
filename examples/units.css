@@ -181,7 +181,7 @@ code {
 }
 
 .list {
-  --cq-t: clamp(0, (100cqi - 320px) / 960px, 1);
+  --cq-t: clamp(0, tan(atan2(100cqi - 320px, 960px)), 1);
   --cq-te: calc(var(--cq-t) * var(--cq-t) * (3 - 2 * var(--cq-t)));
 }
 @supports (opacity: progress(1px, 0px, 2px)) {
@@ -308,7 +308,7 @@ code {
 }
 
 .compare {
-  --cq-t: clamp(0, (100cqi - 320px) / 960px, 1);
+  --cq-t: clamp(0, tan(atan2(100cqi - 320px, 960px)), 1);
   --cq-te: calc(var(--cq-t) * var(--cq-t) * (3 - 2 * var(--cq-t)));
 }
 @supports (opacity: progress(1px, 0px, 2px)) {
@@ -350,7 +350,7 @@ code {
 }
 
 .bar-new {
-  width: calc(26rem - 24rem * clamp(0, (100cqi - 320px) / 960px, 1));
+  width: calc(26rem - 24rem * clamp(0, tan(atan2(100cqi - 320px, 960px)), 1));
   background: var(--accent);
 }
 

@@ -59,7 +59,7 @@ $cq-ceil: 1280 !default;
 }
 
 /// Progress expression as a `clamp()`, giving a unitless number from 0 to 1.
-/// Works in any browser with container query units and length-by-length division.
+/// Divides with `tan(atan2())`, so it needs only container query units and trig functions.
 ///
 /// @param {Number} $floor [$cq-floor] - container width where progress is 0
 /// @param {Number} $ceil [$cq-ceil] - container width where progress is 1
@@ -71,7 +71,7 @@ $cq-ceil: 1280 !default;
   $b: _fluid-bounds($floor, $ceil);
   $f: list.nth($b, 1);
   $c: list.nth($b, 2);
-  @return #{"clamp(0, (100cqi - #{$f}) / #{$c - $f}, 1)"};
+  @return #{"clamp(0, tan(atan2(100cqi - #{$f}, #{$c - $f})), 1)"};
 }
 
 /// Same progress expression using the native `progress()`.

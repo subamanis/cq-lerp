@@ -121,17 +121,19 @@ at compile time.
   inside a nested `container-type` element, and you get two different values. Handy for
   per-component progress, surprising when you expect one shared number.
 - **Two different browser floors.** The `progress()` path needs Chrome 138 / Safari 26 /
-  Firefox 155, all from 2025-2026. The `clamp()` fallback needs only container query units and
-  length-by-length division inside `calc()`, which shipped in Chrome 119, Safari 17 and
-  Firefox 116 back in 2023. Below that second floor there are no `@supports` guards and the
-  declarations are dropped.
+  Firefox 155, all from 2025-2026. The `clamp()` fallback needs container query units and the
+  `tan(atan2())` trick for dividing two lengths, which puts it at Chrome 111, Safari 16 and
+  Firefox 110, all early 2023. A plain `/` between two lengths is newer than `progress()`
+  itself (Chrome 140, Safari 26, nothing in Firefox yet), so the fallback avoids it. Below the
+  2023 floor there are no `@supports` guards and the declarations are dropped.
 - **Nothing animates over time.** Values recompute on layout, the way `width: 50%` does.
 
 ## Prior art
 
 The pieces are all older than this repo.
 [`progress()`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/progress)
-standardises the core trick. Length-by-length division is CSS Values 4, written up by
+standardises the core trick. Dividing two lengths with `tan(atan2())` is the trick from
+[Jane Ori](https://dev.to/janeori/css-type-casting-to-numeric-tanatan2-scalars-582j), written up by
 [Typetura](https://typetura.com/blog/unit-division-with-css-and-fallbacks/).
 [MadeByMike](https://www.madebymike.com.au/writing/interpolation-without-animation/)
 documented the limitation this works around.

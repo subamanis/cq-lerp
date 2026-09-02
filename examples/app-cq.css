@@ -341,7 +341,7 @@ body:has(#drawer-toggle:checked) .scrim {
   }
 }
 body {
-  --cq-t: clamp(0, (100cqi - 360px) / 1040px, 1);
+  --cq-t: clamp(0, tan(atan2(100cqi - 360px, 1040px)), 1);
   --cq-te: calc(var(--cq-t) * var(--cq-t) * (3 - 2 * var(--cq-t)));
 }
 @supports (opacity: progress(1px, 0px, 2px)) {
@@ -370,7 +370,7 @@ body {
 
 .side {
   width: calc(11rem + 6rem * var(--cq-t, 0));
-  --cq-t: clamp(0, (100cqi - 128px) / 288px, 1);
+  --cq-t: clamp(0, tan(atan2(100cqi - 128px, 288px)), 1);
   --cq-te: calc(var(--cq-t) * var(--cq-t) * (3 - 2 * var(--cq-t)));
 }
 @supports (opacity: progress(1px, 0px, 2px)) {
@@ -418,7 +418,7 @@ h1 {
 }
 
 .tri .slot {
-  --cq-t: clamp(0, (100cqi - 240px) / 320px, 1);
+  --cq-t: clamp(0, tan(atan2(100cqi - 240px, 320px)), 1);
   --cq-te: calc(var(--cq-t) * var(--cq-t) * (3 - 2 * var(--cq-t)));
 }
 @supports (opacity: progress(1px, 0px, 2px)) {
