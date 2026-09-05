@@ -72,7 +72,7 @@ h1 { font-size: fluid-on(1.5rem, 2.5rem, var(--cq-te)); }
   width: fluid-on(17rem, 30rem);
   gap: fluid-on(0.6rem, 1rem);
   padding: fluid-on(1rem, 2rem);
-  translate: fluid-on(18rem, 31rem) 0;
+  translate: 100% 0;
   transition: translate fluid-on(0.14s, 1.1s) cubic-bezier(0.32, 0.72, 0, 1);
 }
 

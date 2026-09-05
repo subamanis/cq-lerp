@@ -452,7 +452,7 @@ h1 {
   width: calc(17rem + 13rem * var(--cq-t, 0));
   gap: calc(0.6rem + 0.4rem * var(--cq-t, 0));
   padding: calc(1rem + 1rem * var(--cq-t, 0));
-  translate: calc(18rem + 13rem * var(--cq-t, 0)) 0;
+  translate: 100% 0;
   transition: translate calc(0.14s + 0.96s * var(--cq-t, 0)) cubic-bezier(0.32, 0.72, 0, 1);
 }
 

@@ -75,7 +75,7 @@ h1 { font-size: vwf(1.5rem, 2.5rem); }
   width: vwf(17rem, 30rem);
   gap: vwf(0.6rem, 1rem);
   padding: vwf(1rem, 2rem);
-  translate: vwf(18rem, 31rem) 0;
+  translate: 100% 0;
   transition: translate 0.35s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
