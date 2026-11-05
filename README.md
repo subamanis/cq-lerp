@@ -1,5 +1,7 @@
 # cq-lerp
 
+[![mezura](.github/badge.svg)](https://github.com/subamanis/mezura)
+
 **Container-query linear interpolation.**
 
 ![Dragging the sidebar rescales its contents while the window stays put](https://raw.githubusercontent.com/subamanis/cq-lerp/main/gifs/sidebar.gif)
